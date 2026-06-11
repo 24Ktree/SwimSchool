@@ -1,0 +1,973 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--t:#1D9E75;--tl:#E1F5EE;--tm:#5DCAA5;--td:#085041;
+--b:#185FA5;--bl:#E6F1FB;--bm:#85B7EB;--bd:#0C447C;
+--am:#BA7517;--al:#FAEEDA;--ad:#633806;
+--r:#A32D2D;--rl:#FCEBEB;--rm:#F09595;
+--pu:#534AB7;--pul:#EEEDFE;--pud:#3C3489;
+--gray:var(--color-background-secondary);
+}
+.app{font-family:var(--font-sans);max-width:680px;margin:0 auto}
+.topbar{background:var(--color-background-primary);border-bottom:.5px solid var(--color-border-tertiary);padding:10px 13px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo-row{display:flex;align-items:center;gap:9px}
+.logo-ico{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--tm);display:flex;align-items:center;justify-content:center;background:#fff;flex-shrink:0}
+.logo-ico svg{width:28px;height:28px}
+.logo-tx{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.logo-sub{font-size:10px;color:var(--color-text-secondary)}
+.top-r{display:flex;align-items:center;gap:6px}
+.sync-badge{background:var(--tl);border:.5px solid var(--tm);border-radius:var(--border-radius-md);padding:3px 7px;font-size:10px;color:var(--td);display:flex;align-items:center;gap:3px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--t);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.rel{position:relative}
+.nb{background:#E24B4A;color:#fff;border-radius:10px;font-size:9px;padding:1px 4px;position:absolute;top:-4px;right:-4px}
+.lang-btn{font-size:10px;color:var(--color-text-secondary);cursor:pointer;padding:3px 7px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);display:flex;align-items:center;gap:3px}
+.lang-menu{display:none;position:absolute;top:28px;right:0;background:var(--color-background-primary);border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);min-width:130px;z-index:100}
+.lang-menu.open{display:block}
+.lang-opt{padding:8px 12px;font-size:12px;cursor:pointer;color:var(--color-text-primary);display:flex;align-items:center;gap:6px;border-bottom:.5px solid var(--color-border-tertiary)}
+.lang-opt:last-child{border-bottom:none}
+.lang-opt:hover{background:var(--gray)}
+.lang-opt.sel{color:var(--t);font-weight:500}
+
+.nav{background:var(--color-background-primary);border-bottom:.5px solid var(--color-border-tertiary);display:flex}
+.ni{flex:1;padding:8px 2px;text-align:center;cursor:pointer;border-bottom:2px solid transparent;font-size:10px;color:var(--color-text-secondary);transition:all .15s}
+.ni.act{border-bottom-color:var(--t);color:var(--td);font-weight:500}
+.ni i{font-size:16px;display:block;margin-bottom:1px}
+
+.pg{display:none;padding:11px 12px 60px}
+.pg.act{display:block}
+.sec{font-size:10px;font-weight:500;color:var(--color-text-secondary);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.4px}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:11px 13px;margin-bottom:8px}
+.alert{border-radius:var(--border-radius-lg);padding:10px 12px;margin-bottom:9px;display:flex;gap:9px}
+.alert i{font-size:16px;margin-top:1px;flex-shrink:0}
+.al-ok{background:var(--tl);border:.5px solid var(--tm)}
+.al-ok i,.al-ok .al-ti{color:var(--td)}
+.al-ok .al-bd{color:#0F6E56}
+.al-info{background:var(--bl);border:.5px solid var(--bm)}
+.al-info i,.al-info .al-ti{color:var(--bd)}
+.al-info .al-bd{color:var(--b)}
+.al-warn{background:var(--al);border:.5px solid #EF9F27}
+.al-warn i,.al-warn .al-ti{color:var(--ad)}
+.al-warn .al-bd{color:var(--am)}
+.al-danger{background:var(--rl);border:.5px solid var(--rm)}
+.al-danger i,.al-danger .al-ti,.al-danger .al-bd{color:var(--r)}
+.al-push{background:var(--pul);border:.5px solid #AFA9EC}
+.al-push i,.al-push .al-ti{color:var(--pud)}
+.al-push .al-bd{color:var(--pu)}
+.al-cancel{background:#2C2C2A;border:.5px solid #5F5E5A}
+.al-cancel i,.al-cancel .al-ti,.al-cancel .al-bd{color:#D3D1C7}
+.al-ti{font-size:12px;font-weight:500}
+.al-bd{font-size:11px;margin-top:2px}
+
+.btn{padding:6px 12px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;cursor:pointer;border:none;transition:all .15s}
+.btn.p{background:var(--t);color:#fff}
+.btn.p:hover{background:#0F6E56}
+.btn.o{background:transparent;color:var(--t);border:.5px solid var(--tm)}
+.btn.o:hover{background:var(--tl)}
+.btn.sec{background:transparent;color:var(--color-text-secondary);border:.5px solid var(--color-border-secondary)}
+.btn.amber{background:var(--al);color:var(--ad);border:.5px solid #EF9F27}
+.btn.full{width:100%;padding:10px;font-size:13px;margin-top:7px;border-radius:var(--border-radius-md)}
+
+.pill{display:inline-flex;align-items:center;gap:2px;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.p-x{background:var(--rl);color:#791F1F}
+.p-m{background:var(--al);color:var(--ad)}
+.p-b{background:var(--pul);color:var(--pud)}
+.p-ns{background:#2C2C2A;color:#D3D1C7}
+.p-ok{background:#EAF3DE;color:#27500A}
+.p-pass{background:var(--tl);color:var(--td)}
+.p-extra{background:var(--bl);color:var(--bd)}
+.p-nc{background:#B4B2A9;color:#444441}
+
+.lv-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
+.lv1-b{background:#FCEBEB;color:var(--r);border:.5px solid var(--rm)}
+.lv2-b{background:#FAECE7;color:#712B13;border:.5px solid #F0997B}
+.lv3-b{background:var(--al);color:var(--ad);border:.5px solid #EF9F27}
+.lv4-b{background:var(--tl);color:var(--td);border:.5px solid var(--tm)}
+.lv5-b{background:var(--bl);color:var(--bd);border:.5px solid var(--bm)}
+.lv6-b{background:#2C2C2A;color:#D3D1C7;border:.5px solid #5F5E5A}
+.lv-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.lv1-dot{background:#E24B4A}.lv2-dot{background:#D85A30}.lv3-dot{background:#BA7517}
+.lv4-dot{background:#1D9E75}.lv5-dot{background:#185FA5}.lv6-dot{background:#2C2C2A}
+
+.adot{width:20px;height:20px;border-radius:3px;font-size:8px;display:flex;align-items:center;justify-content:center;font-weight:500;cursor:pointer;border:.5px solid transparent;transition:all .15s;flex-shrink:0}
+.adot.o{background:#EAF3DE;color:#27500A}
+.adot.x{background:var(--rl);color:#791F1F}
+.adot.m{background:var(--al);color:var(--ad)}
+.adot.b{background:var(--pul);color:var(--pud)}
+.adot.ns{background:#2C2C2A;color:#D3D1C7}
+.adot.n{background:var(--gray);color:var(--color-text-secondary)}
+.adot.p{background:var(--tl);color:var(--td)}
+.adot.s{background:var(--rl);color:#791F1F}
+.adot.cancel{background:#444441;color:#D3D1C7;font-size:7px}
+.adot:hover{border-color:var(--t)}
+
+.child-sw{display:flex;gap:5px;margin-bottom:9px;overflow-x:auto;padding-bottom:2px}
+.csw{padding:5px 11px;border-radius:20px;border:.5px solid var(--color-border-secondary);font-size:11px;cursor:pointer;white-space:nowrap;color:var(--color-text-secondary);display:flex;align-items:center;gap:3px;transition:all .15s}
+.csw.act{background:var(--t);color:#fff;border-color:var(--t)}
+
+.tab-row{display:flex;gap:5px;margin-bottom:9px;overflow-x:auto;padding-bottom:2px}
+.tab{padding:4px 10px;border-radius:20px;border:.5px solid var(--color-border-secondary);font-size:10px;cursor:pointer;white-space:nowrap;color:var(--color-text-secondary)}
+.tab.on{background:var(--b);color:#fff;border-color:var(--b)}
+
+/* 수업 시간표 그리드 */
+.schedule-day{margin-bottom:12px}
+.day-header{font-size:11px;font-weight:500;color:var(--color-text-primary);padding:6px 10px;background:var(--gray);border-radius:var(--border-radius-md);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.day-header.weekend-sat{background:var(--bl);color:var(--bd)}
+.day-header.weekend-sun{background:var(--tl);color:var(--td)}
+.time-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.time-slot{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:7px 9px;cursor:pointer;transition:all .15s;background:var(--color-background-primary)}
+.time-slot:hover:not(.nc-slot){border-color:var(--t);background:var(--tl)}
+.time-slot.sel{border:1.5px solid var(--t);background:var(--tl)}
+.time-slot.nc-slot{background:var(--gray);opacity:.55;cursor:not-allowed}
+.ts-time{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.ts-info{font-size:10px;color:var(--color-text-secondary);margin-top:1px}
+.ts-avail{font-size:10px;margin-top:2px}
+.ts-avail.open{color:#0F6E56}
+.ts-avail.low{color:var(--am)}
+.ts-avail.full{color:var(--r)}
+.slot-ck{display:none;float:right;color:var(--t);font-size:12px}
+.time-slot.sel .slot-ck{display:inline}
+
+.fg{margin-bottom:9px}
+.fl{font-size:10px;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px;display:block}
+.fi{width:100%;padding:7px 10px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.fsel{width:100%;padding:7px 10px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.pay-box{background:var(--gray);border-radius:var(--border-radius-md);padding:10px;margin-top:8px}
+.pay-row{display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);padding:3px 0}
+.pay-tot{display:flex;justify-content:space-between;font-size:13px;font-weight:500;color:var(--color-text-primary);padding-top:7px;border-top:.5px solid var(--color-border-tertiary);margin-top:4px}
+
+.quota-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.quota-track{flex:1;height:5px;background:var(--gray);border-radius:3px;overflow:hidden}
+.quota-fill{height:100%;border-radius:3px;background:var(--t)}
+.quota-fill.warn{background:var(--am)}
+
+.att-row{display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:.5px solid var(--color-border-tertiary)}
+.att-row:last-child{border-bottom:none}
+.rav{width:26px;height:26px;border-radius:50%;background:var(--gray);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:var(--color-text-secondary);flex-shrink:0}
+
+.modal-wrap{display:none;background:rgba(0,0,0,.45);min-height:500px;align-items:flex-end;justify-content:center}
+.modal-wrap.open{display:flex}
+.modal{background:var(--color-background-primary);border-radius:16px 16px 0 0;padding:16px;width:100%;max-height:90vh;overflow-y:auto}
+.mhandle{width:34px;height:3px;background:var(--color-border-secondary);border-radius:2px;margin:0 auto 13px}
+.mti{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.msub{font-size:11px;color:var(--color-text-secondary);margin-bottom:12px}
+.succ{text-align:center;padding:14px 0}
+.succ-ico{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px}
+
+.notif-it{display:flex;gap:8px;padding:9px 0;border-bottom:.5px solid var(--color-border-tertiary)}
+.notif-it:last-child{border-bottom:none}
+.ndot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.ndot.ok{background:var(--t)}.ndot.warn{background:var(--am)}.ndot.danger{background:var(--r)}
+.ndot.info{background:var(--b)}.ndot.push{background:var(--pu)}.ndot.cancel{background:#5F5E5A}
+.nti{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.nd{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.nt{font-size:10px;color:var(--color-text-secondary);margin-top:3px}
+.divider{height:.5px;background:var(--color-border-tertiary);margin:8px 0}
+.week-grid{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px}
+.wk{width:22px;height:22px;border-radius:3px;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:500}
+.wk-n{background:var(--gray);color:var(--color-text-secondary);border:.5px solid var(--color-border-tertiary)}
+.wk-o{background:#EAF3DE;color:#27500A}
+.wk-m{background:var(--al);color:var(--ad)}
+.wk-b{background:var(--pul);color:var(--pud)}
+.wk-nc{background:#B4B2A9;color:#444441;font-size:7px}
+
+.session-banner{background:var(--bl);border:.5px solid var(--bm);border-radius:var(--border-radius-md);padding:9px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+</style>
+
+<h2 class="sr-only">NJ Swimming Group — Summer 2025 전체 수업 (토/일 포함)</h2>
+
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo-row">
+    <div class="logo-ico">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="19" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1.2"/>
+        <text x="20" y="16" text-anchor="middle" font-size="9" font-weight="500" fill="#085041" font-family="sans-serif">NJ</text>
+        <text x="20" y="25" text-anchor="middle" font-size="6" fill="#1D9E75" font-family="sans-serif">SWIMMING</text>
+        <path d="M8 31 Q12 28 16 31 Q20 34 24 31 Q28 28 32 31" stroke="#1D9E75" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-tx">NJ Swimming Group</div>
+      <div class="logo-sub">수영학교</div>
+    </div>
+  </div>
+  <div class="top-r">
+    <div class="rel">
+      <button class="lang-btn" onclick="toggleLang()" aria-label="언어 선택">
+        <i class="ti ti-language" aria-hidden="true" style="font-size:12px"></i>
+        <span id="cur-lang">KO</span>
+        <i class="ti ti-chevron-down" aria-hidden="true" style="font-size:10px"></i>
+      </button>
+      <div class="lang-menu" id="lang-menu">
+        <div class="lang-opt sel" onclick="setLang('KO')"><i class="ti ti-check" style="font-size:11px;color:var(--t)" aria-hidden="true"></i>한국어</div>
+        <div class="lang-opt" onclick="setLang('EN')">English</div>
+        <div class="lang-opt" onclick="setLang('ES')">Español</div>
+        <div class="lang-opt" onclick="setLang('ZH')">中文</div>
+        <div class="lang-opt" onclick="setLang('PT')">Português</div>
+      </div>
+    </div>
+    <div class="sync-badge"><div class="live-dot"></div>Sheets 연동</div>
+    <div class="rel">
+      <i class="ti ti-bell" style="font-size:17px;color:var(--color-text-secondary);cursor:pointer" aria-label="알림" onclick="goPage('notif')"></i>
+      <span class="nb">2</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav" id="nav">
+  <div class="ni act" data-pg="home"><i class="ti ti-home" aria-hidden="true"></i>홈</div>
+  <div class="ni" data-pg="makeup"><i class="ti ti-calendar-plus" aria-hidden="true"></i>보충/추가</div>
+  <div class="ni" data-pg="history"><i class="ti ti-clock-search" aria-hidden="true"></i>기록</div>
+  <div class="ni" data-pg="admin"><i class="ti ti-shield-cog" aria-hidden="true"></i>관리자</div>
+  <div class="ni" data-pg="notif"><i class="ti ti-bell" aria-hidden="true"></i>알림</div>
+</div>
+
+<!-- ===== HOME ===== -->
+<div class="pg act" id="pg-home">
+
+  <!-- 세션 배너 (유효기간 마감 → "여름학기 마지막날") -->
+  <div class="session-banner">
+    <div>
+      <div style="font-size:12px;font-weight:500;color:var(--bd)">☀️ Summer 2025 세션</div>
+      <div style="font-size:11px;color:var(--b);margin-top:2px">6/22 (일) ~ 8/21 (목)</div>
+      <div style="font-size:10px;color:var(--b);margin-top:1px">주중 9주 · 토 8주(7/4 휴강) · 일 8주</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:10px;color:var(--bd)">여름학기 마지막날</div>
+      <div style="font-size:13px;font-weight:500;color:var(--r)">8/21/2026</div>
+    </div>
+  </div>
+
+  <!-- 상태 코드 범례 -->
+  <div class="card" style="padding:9px 12px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot o" style="cursor:default">O</div>출석</div>
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot x" style="cursor:default">X</div>미등록일</div>
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot m" style="cursor:default">M</div>Make-up(보충가능)</div>
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot b" style="cursor:default">B</div>보너스(Cash)</div>
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot ns" style="cursor:default">NS</div>무단결석</div>
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot p" style="cursor:default">P</div>테스트통과</div>
+      <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--color-text-secondary)"><div class="adot s" style="cursor:default">S</div>반복요망</div>
+    </div>
+  </div>
+
+  <!-- 자녀 선택 -->
+  <div class="child-sw">
+    <div class="csw act" onclick="swChild(this,'jia')"><i class="ti ti-user" style="font-size:11px" aria-hidden="true"></i>Jia #6458</div>
+    <div class="csw" onclick="swChild(this,'dana')"><i class="ti ti-user" style="font-size:11px" aria-hidden="true"></i>Dana #6435</div>
+    <div class="csw" style="border-style:dashed" onclick="openModal('modal-addchild')"><i class="ti ti-plus" style="font-size:11px" aria-hidden="true"></i>자녀 추가</div>
+  </div>
+
+  <!-- Jia Yoo -->
+  <div id="ch-jia">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px">
+      <div style="background:var(--gray);border-radius:var(--border-radius-md);padding:8px;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--t)">0</div><div style="font-size:10px;color:var(--color-text-secondary)">출석</div></div>
+      <div style="background:var(--gray);border-radius:var(--border-radius-md);padding:8px;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--r)">0</div><div style="font-size:10px;color:var(--color-text-secondary)">결석</div></div>
+      <div style="background:var(--gray);border-radius:var(--border-radius-md);padding:8px;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--pud)">3B</div><div style="font-size:10px;color:var(--color-text-secondary)">보너스</div></div>
+      <div style="background:var(--gray);border-radius:var(--border-radius-md);padding:8px;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--am)">0/2</div><div style="font-size:10px;color:var(--color-text-secondary)">보충사용</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;gap:9px">
+        <div style="width:36px;height:36px;border-radius:var(--border-radius-md);background:var(--al);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--am);flex-shrink:0"><i class="ti ti-swimming" aria-hidden="true"></i></div>
+        <div style="flex:1">
+          <span class="lv-badge lv3-b"><div class="lv-dot lv3-dot"></div>Level 3 (노랑)</span>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:3px">Mon @4:10pm, Fri @4:10pm</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);margin-top:2px">ID #6458 · $550 Cash · 3B</div>
+        </div>
+        <button class="btn o" style="font-size:10px" onclick="goPage('makeup')">보충/추가</button>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:4px">9주 출석 (주중)</div>
+      <div class="week-grid">
+        <div class="wk wk-n" title="6/22">–</div><div class="wk wk-n" title="6/29">–</div>
+        <div class="wk wk-n" title="7/6">–</div><div class="wk wk-n" title="7/13">–</div>
+        <div class="wk wk-n" title="7/20">–</div><div class="wk wk-n" title="7/27">–</div>
+        <div class="wk wk-n" title="8/3">–</div><div class="wk wk-n" title="8/10">–</div>
+        <div class="wk wk-n" title="8/17 TEST">–</div>
+      </div>
+      <div style="font-size:10px;color:var(--color-text-secondary);margin-top:3px">여름학기 마지막날: 8/21/2026 · 마지막 수업(TEST): 8/17</div>
+    </div>
+  </div>
+
+  <!-- Dana Kang -->
+  <div id="ch-dana" style="display:none">
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;gap:9px">
+        <div style="width:36px;height:36px;border-radius:var(--border-radius-md);background:var(--tl);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t);flex-shrink:0"><i class="ti ti-swimming" aria-hidden="true"></i></div>
+        <div style="flex:1">
+          <span class="lv-badge lv4-b"><div class="lv-dot lv4-dot"></div>Level 4 (초록)</span>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:3px">Sat @10:30am</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);margin-top:2px">ID #6435 · $240 Cash · 2B · 보충 3회 가능</div>
+          <div style="margin-top:4px"><span class="pill p-m">M 예약됨</span> <span class="pill p-b">2B</span></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:4px">8주 출석 (토요일 · 7/4 NC)</div>
+      <div class="week-grid">
+        <div class="wk wk-n" title="6/27">–</div>
+        <div class="wk wk-nc" title="7/4 NO CLASS">NC</div>
+        <div class="wk wk-n" title="7/11">–</div><div class="wk wk-n" title="7/18">–</div>
+        <div class="wk wk-n" title="7/25">–</div><div class="wk wk-n" title="8/1">–</div>
+        <div class="wk wk-n" title="8/8">–</div><div class="wk wk-n" title="8/15 TEST">–</div>
+      </div>
+      <div style="font-size:10px;color:var(--r);margin-top:3px">7/4 (금) 독립기념일 — 토요일 수업 없음</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 보충/추가수업 신청 ===== -->
+<div class="pg" id="pg-makeup">
+  <div class="tab-row">
+    <div class="tab on" onclick="swMuTab(this,'mu-makeup')">보충수업 신청</div>
+    <div class="tab" onclick="swMuTab(this,'mu-extra')">추가수업 ($40)</div>
+  </div>
+
+  <!-- 보충수업 -->
+  <div id="mu-makeup">
+    <div class="alert al-info" style="margin-top:0">
+      <i class="ti ti-info-circle" aria-hidden="true"></i>
+      <div>
+        <div class="al-ti">보충수업 규칙</div>
+        <div class="al-bd">M(보충가능)만 신청 가능 · NS 불가 · 세션당 최대 2회<br>여름학기 마지막날 <strong style="color:var(--r)">8/21/2026</strong>까지 · 마지막주 신청 시 /TEST 기재</div>
+      </div>
+    </div>
+
+    <div class="child-sw">
+      <div class="csw act" onclick="swMuChild(this,'mup-jia')"><i class="ti ti-user" style="font-size:11px" aria-hidden="true"></i>Jia #6458</div>
+      <div class="csw" onclick="swMuChild(this,'mup-dana')"><i class="ti ti-user" style="font-size:11px" aria-hidden="true"></i>Dana #6435</div>
+    </div>
+
+    <div id="mup-jia">
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px">Jia #6458 · Level 3 · Mon @4:10pm, Fri @4:10pm</div>
+        <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:8px">현재 결석 없음 · 관리자가 M 표시 시 신청 가능</div>
+        <div style="text-align:center;padding:14px;border:.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md)">
+          <i class="ti ti-calendar-off" aria-hidden="true" style="font-size:20px;display:block;margin-bottom:5px;color:var(--color-border-secondary)"></i>
+          <div style="font-size:11px;color:var(--color-text-secondary)">보충 가능한 기록이 없습니다</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mup-dana" style="display:none">
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px">Dana #6435 · Level 4 · Sat @10:30am</div>
+        <div class="quota-bar">
+          <span style="font-size:10px;color:var(--color-text-secondary);white-space:nowrap">보충 잔여 (3회 한도)</span>
+          <div class="quota-track"><div class="quota-fill warn" style="width:33%"></div></div>
+          <span style="font-size:11px;font-weight:500;color:var(--am)">1/3 사용</span>
+        </div>
+
+        <!-- 토요일 슬롯 -->
+        <div style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin-bottom:5px">토요일 보충 가능 슬롯</div>
+        <div class="time-slot" onclick="selMu(this,'7/11 (Sat) @10:30am','Peter','레인 3 · Lv.3-4','false')" style="margin-bottom:5px">
+          <i class="ti ti-check slot-ck" aria-hidden="true"></i>
+          <div style="display:flex;justify-content:space-between">
+            <div><div class="ts-time">7/11 (Sat) @10:30am</div><div class="ts-info">Peter 코치 · 레인 3 · Lv.3-4</div></div>
+            <div style="text-align:right"><div class="ts-avail open">보충 2석</div><div class="ts-info">4/6명</div></div>
+          </div>
+        </div>
+        <div class="time-slot" onclick="selMu(this,'8/15 (Sat) @10:30am','Peter','레인 3 · Lv.3-4','true')" style="margin-bottom:5px">
+          <i class="ti ti-check slot-ck" aria-hidden="true"></i>
+          <div style="display:flex;justify-content:space-between">
+            <div>
+              <div class="ts-time">8/15 (Sat) @10:30am <span class="pill" style="background:var(--tl);color:var(--td);font-size:9px;margin-left:3px">마지막 주</span></div>
+              <div class="ts-info">Peter 코치 · 레인 3 · Lv.3-4</div>
+            </div>
+            <div style="text-align:right"><div class="ts-avail open">보충 1석</div><div class="ts-info" style="color:var(--td)">TEST 포함</div></div>
+          </div>
+        </div>
+
+        <!-- 일요일 슬롯 -->
+        <div style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin-bottom:5px;margin-top:8px">일요일 보충 가능 슬롯</div>
+        <div class="time-slot" onclick="selMu(this,'7/12 (Sun) @10:30am','Haena','레인 2 · Lv.3-4','false')" style="margin-bottom:5px">
+          <i class="ti ti-check slot-ck" aria-hidden="true"></i>
+          <div style="display:flex;justify-content:space-between">
+            <div><div class="ts-time">7/12 (Sun) @10:30am</div><div class="ts-info">Haena 코치 · 레인 2 · Lv.3-4</div></div>
+            <div style="text-align:right"><div class="ts-avail open">보충 3석</div><div class="ts-info">3/6명</div></div>
+          </div>
+        </div>
+        <div class="time-slot" onclick="selMu(this,'7/12 (Sun) @3:00pm','Anton','레인 2 · Lv.3-4','false')" style="margin-bottom:5px">
+          <i class="ti ti-check slot-ck" aria-hidden="true"></i>
+          <div style="display:flex;justify-content:space-between">
+            <div><div class="ts-time">7/12 (Sun) @3:00pm</div><div class="ts-info">Anton 코치 · 레인 2 · Lv.3-4</div></div>
+            <div style="text-align:right"><div class="ts-avail low">보충 1석</div><div class="ts-info">5/6명</div></div>
+          </div>
+        </div>
+        <div class="time-slot nc-slot" style="margin-bottom:5px">
+          <div style="display:flex;justify-content:space-between">
+            <div><div class="ts-time">7/6 (Sun) — NC</div><div class="ts-info">7/4 주간 휴강</div></div>
+            <div><span class="pill p-nc">NC</span></div>
+          </div>
+        </div>
+
+        <div id="dana-mu-confirm" style="display:none;margin-top:9px">
+          <div class="pay-box">
+            <div class="pay-row"><span>학생</span><span>Dana #6435 · Lv.4</span></div>
+            <div class="pay-row"><span>보충 일정</span><span id="mu-dt" style="font-weight:500;color:var(--color-text-primary)">-</span></div>
+            <div class="pay-row"><span>코치/레인</span><span id="mu-info">-</span></div>
+            <div class="pay-row"><span>시트 기재</span><span id="mu-cell" style="color:var(--bd);font-size:10px">-</span></div>
+            <div class="pay-tot"><span>요금</span><span style="color:var(--t)">무료</span></div>
+          </div>
+          <button class="btn p full" onclick="openModal('modal-mu')">예약 확정 + 시트 자동 기재</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 추가수업 탭 -->
+  <div id="mu-extra" style="display:none">
+    <div class="alert al-ok" style="margin-top:0">
+      <i class="ti ti-cash" aria-hidden="true"></i>
+      <div>
+        <div class="al-ti">추가수업 $40 / 회 · 현재 등록 학생만</div>
+        <div class="al-bd">요청 → 관리자 인보이스 발송 → 결제 → 예약 확정<br>njsg@newjerseyswimming.com</div>
+      </div>
+    </div>
+
+    <!-- 요일별 탭 -->
+    <div class="tab-row">
+      <div class="tab on" onclick="swDayTab(this,'day-weekday')">주중 (월-금)</div>
+      <div class="tab" onclick="swDayTab(this,'day-sat')">토요일</div>
+      <div class="tab" onclick="swDayTab(this,'day-sun')">일요일</div>
+    </div>
+
+    <!-- 주중 -->
+    <div id="day-weekday">
+      <div class="schedule-day">
+        <div class="day-header">월요일 (Monday)</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Mon @4:10pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:10pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Mon @4:50pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:50pm</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Mon @5:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:30pm</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Mon @6:20pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:20pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Mon @7:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@7:00pm</div><div class="ts-avail open">3석</div></div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-header">화요일 (Tuesday)</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Tue @4:10pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:10pm</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Tue @4:50pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:50pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Tue @5:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:30pm</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Tue @6:20pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:20pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Tue @7:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@7:00pm</div><div class="ts-avail open">4석</div></div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-header">수요일 (Wednesday)</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Wed @4:10pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:10pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Wed @4:50pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:50pm</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Wed @5:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:30pm</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Wed @6:20pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:20pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Wed @7:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@7:00pm</div><div class="ts-avail open">3석</div></div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-header">목요일 (Thursday)</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Thu @4:10pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:10pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Thu @4:50pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:50pm</div><div class="ts-avail open">4석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Thu @5:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:30pm</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Thu @6:20pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:20pm</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Thu @7:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@7:00pm</div><div class="ts-avail open">2석</div></div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-header">금요일 (Friday)</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Fri @4:10pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:10pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Fri @4:50pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:50pm</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Fri @5:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:30pm</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Fri @6:20pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:20pm</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Fri @7:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@7:00pm</div><div class="ts-avail open">3석</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 토요일 전체 -->
+    <div id="day-sat" style="display:none">
+      <div class="alert al-cancel" style="margin-bottom:8px">
+        <i class="ti ti-calendar-off" aria-hidden="true"></i>
+        <div><div class="al-ti">7/4 (토) — NO CLASS (독립기념일)</div></div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-header weekend-sat">토요일 (Saturday) · 8주 · 8:45am~6:15pm</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Sat @9:00am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@9:00am</div><div class="ts-info">Peter/Ruben</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @9:45am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@9:45am</div><div class="ts-info">Peter/Samuel</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @10:30am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@10:30am</div><div class="ts-info">Peter/Samuel</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @11:15am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@11:15am</div><div class="ts-info">Peter/Joseph</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @12:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@12:00pm</div><div class="ts-info">Peter/Anton</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @12:45pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@12:45pm</div><div class="ts-info">Peter/Andrew</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @1:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@1:30pm</div><div class="ts-info">David/Michelle</div><div class="ts-avail open">4석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @2:15pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@2:15pm</div><div class="ts-info">David/NJPL</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @3:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@3:00pm</div><div class="ts-info">David/NJPL</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @3:45pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@3:45pm</div><div class="ts-info">Jay/NJPL</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @4:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:30pm</div><div class="ts-info">Jason/Jay/NJPL</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @5:15pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:15pm</div><div class="ts-info">Peter/Jason/Jay</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sat @6:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:00pm</div><div class="ts-info">Jason/Jay (성인)</div><div class="ts-avail open">2석</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 일요일 전체 -->
+    <div id="day-sun" style="display:none">
+      <div class="schedule-day">
+        <div class="day-header weekend-sun">일요일 (Sunday) · 8주 · 9:35am~7:30pm+</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selEx(this,'Sun @9:00am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@9:00am</div><div class="ts-info">Haena/Samuel</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @9:45am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@9:45am</div><div class="ts-info">Haena/Samuel</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @10:30am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@10:30am</div><div class="ts-info">Haena/Samuel</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @11:15am')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@11:15am</div><div class="ts-info">Samuel/Jay</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @12:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@12:00pm</div><div class="ts-info">Madelyn/Anton</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @12:45pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@12:45pm</div><div class="ts-info">Madelyn/Aiden</div><div class="ts-avail open">4석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @1:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@1:30pm</div><div class="ts-info">Aiden/Anton</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @2:15pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@2:15pm</div><div class="ts-info">Anton/Aiden</div><div class="ts-avail low">1석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @3:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@3:00pm</div><div class="ts-info">Peter/Aiden</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @3:45pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@3:45pm</div><div class="ts-info">Peter</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @4:30pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@4:30pm</div><div class="ts-info">Peter/Aiden</div><div class="ts-avail open">2석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @5:15pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@5:15pm</div><div class="ts-info">Peter/Jason</div><div class="ts-avail open">3석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @6:00pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:00pm</div><div class="ts-info">Jason (성인)</div><div class="ts-avail open">4석</div></div>
+          <div class="time-slot" onclick="selEx(this,'Sun @6:45pm')"><i class="ti ti-check slot-ck" aria-hidden="true"></i><div class="ts-time">@6:45pm</div><div class="ts-info">Jason (성인)</div><div class="ts-avail open">3석</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="extra-confirm" style="display:none;margin-top:9px">
+      <div class="pay-box">
+        <div class="pay-row"><span>추가 수업</span><span id="ex-dt" style="font-weight:500;color:var(--color-text-primary)">-</span></div>
+        <div class="pay-row"><span>시트 기재 (승인 후)</span><span id="ex-cell" style="color:var(--bd);font-size:10px">-</span></div>
+        <div class="pay-row"><span>알림</span><span style="font-size:10px">njsg@newjerseyswimming.com</span></div>
+        <div class="pay-tot"><span>요금</span><span style="color:var(--t)">$40 (인보이스 후)</span></div>
+      </div>
+      <button class="btn p full" onclick="openModal('modal-extra')">관리자에게 요청 전송</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 기록 ===== -->
+<div class="pg" id="pg-history">
+  <div class="child-sw" style="margin-top:4px">
+    <div class="csw act">전체</div>
+    <div class="csw">Jia</div>
+    <div class="csw">Dana</div>
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <input type="text" class="fi" placeholder="날짜, 코치, 수업 검색..." style="flex:1">
+    <button class="btn p" aria-label="검색"><i class="ti ti-search" style="font-size:12px" aria-hidden="true"></i></button>
+  </div>
+  <div class="tab-row">
+    <div class="tab on">전체</div>
+    <div class="tab">결석</div>
+    <div class="tab">보충</div>
+    <div class="tab">보너스</div>
+    <div class="tab">무단</div>
+    <div class="tab">결제</div>
+  </div>
+  <div style="font-size:10px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">Summer 2025 (현재 세션)</div>
+  <div style="border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:9px 11px;margin-bottom:6px;display:flex;align-items:center;gap:9px">
+    <div style="width:40px;text-align:center;flex-shrink:0"><div style="font-size:9px;color:var(--color-text-secondary)">JUN</div><div style="font-size:16px;font-weight:500">22</div></div>
+    <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Jia — 세션 시작 · 등록 완료</div><div style="font-size:10px;color:var(--color-text-secondary)">Level 3 · Mon @4:10pm, Fri @4:10pm · $550 Cash · 3B · 여름학기 마지막날 8/21/2026</div></div>
+    <span class="pill p-b">3B</span>
+  </div>
+  <div style="border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:9px 11px;margin-bottom:6px;display:flex;align-items:center;gap:9px">
+    <div style="width:40px;text-align:center;flex-shrink:0"><div style="font-size:9px;color:var(--color-text-secondary)">JUN</div><div style="font-size:16px;font-weight:500">7</div></div>
+    <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Dana — 보충 예약(M)</div><div style="font-size:10px;color:var(--color-text-secondary)">Level 4 · Sat @10:30am · Dana/4/Sat 10:30am</div></div>
+    <span class="pill p-m">M</span>
+  </div>
+</div>
+
+<!-- ===== 관리자 ===== -->
+<div class="pg" id="pg-admin">
+  <div class="tab-row">
+    <div class="tab on" onclick="swAtab(this,'adm-att')">출석 입력</div>
+    <div class="tab" onclick="swAtab(this,'adm-test')">레벨 테스트</div>
+    <div class="tab" onclick="swAtab(this,'adm-review')">검토 대기</div>
+    <div class="tab" onclick="swAtab(this,'adm-register')">학생 등록</div>
+    <div class="tab" onclick="swAtab(this,'adm-sheet')">시트 설정</div>
+  </div>
+
+  <div id="adm-att">
+    <div class="fg">
+      <select class="fsel">
+        <option>Mon @4:10pm</option><option>Mon @4:50pm</option><option>Mon @5:30pm</option>
+        <option>Mon @6:20pm</option><option>Mon @7:00pm</option>
+        <option>Tue @4:10pm</option><option>Tue @4:50pm</option><option>Tue @5:30pm</option>
+        <option>Tue @6:20pm</option><option>Tue @7:00pm</option>
+        <option>Wed @4:10pm</option><option>Wed @4:50pm</option><option>Wed @5:30pm</option>
+        <option>Wed @6:20pm</option><option>Wed @7:00pm</option>
+        <option>Thu @4:10pm</option><option>Thu @4:50pm</option><option>Thu @5:30pm</option>
+        <option>Thu @6:20pm</option><option>Thu @7:00pm</option>
+        <option>Fri @4:10pm</option><option>Fri @4:50pm</option><option>Fri @5:30pm</option>
+        <option>Fri @6:20pm</option><option>Fri @7:00pm</option>
+        <option disabled>──── 토요일 ────</option>
+        <option>Sat @9:00am</option><option>Sat @9:45am</option><option>Sat @10:30am</option>
+        <option>Sat @11:15am</option><option>Sat @12:00pm</option><option>Sat @12:45pm</option>
+        <option>Sat @1:30pm</option><option>Sat @2:15pm</option><option>Sat @3:00pm</option>
+        <option>Sat @3:45pm</option><option>Sat @4:30pm</option><option>Sat @5:15pm</option>
+        <option>Sat @6:00pm</option>
+        <option disabled>──── 일요일 ────</option>
+        <option>Sun @9:00am</option><option>Sun @9:45am</option><option>Sun @10:30am</option>
+        <option>Sun @11:15am</option><option>Sun @12:00pm</option><option>Sun @12:45pm</option>
+        <option>Sun @1:30pm</option><option>Sun @2:15pm</option><option>Sun @3:00pm</option>
+        <option>Sun @3:45pm</option><option>Sun @4:30pm</option><option>Sun @5:15pm</option>
+        <option>Sun @6:00pm</option><option>Sun @6:45pm</option>
+      </select>
+    </div>
+    <div class="card" style="padding:10px 12px">
+      <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:6px">클릭 → O/X/M/B/NS/P/S/Cancel 순환 → Sheets 저장 + 앱 알림</div>
+      <div class="att-row">
+        <div class="rav">JY</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11px;font-weight:500;color:var(--color-text-primary)">Jia Yoo <span style="font-size:9px;color:var(--color-text-secondary)">#6458 · Lv.3</span></div>
+          <div style="font-size:10px;color:var(--color-text-secondary)">Mon @4:10pm, Fri @4:10pm · Cash · 3B</div>
+        </div>
+        <div style="display:flex;gap:2px">
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+        </div>
+      </div>
+      <div class="att-row">
+        <div class="rav">DK</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11px;font-weight:500;color:var(--color-text-primary)">Dana Kang <span style="font-size:9px;color:var(--color-text-secondary)">#6435 · Lv.4</span></div>
+          <div style="font-size:10px;color:var(--color-text-secondary)">Sat @10:30am · Cash · 2B · 보충 M</div>
+        </div>
+        <div style="display:flex;gap:2px">
+          <div class="adot m" onclick="cycleAtt(this)">M</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+          <div class="adot n" onclick="cycleAtt(this)">–</div>
+        </div>
+      </div>
+      <div class="divider" style="margin:6px 0 5px"></div>
+      <div style="font-size:10px;color:var(--color-text-secondary)">보충/추가 슬롯 (최대 3 · 총 6명 초과불가)</div>
+      <div style="display:flex;gap:4px;margin-top:5px">
+        <div style="font-size:10px;color:var(--b);background:var(--bl);padding:3px 8px;border-radius:var(--border-radius-md)">S: 빈 자리</div>
+        <div style="font-size:10px;color:var(--b);background:var(--bl);padding:3px 8px;border-radius:var(--border-radius-md)">S: 빈 자리</div>
+        <div style="font-size:10px;color:var(--b);background:var(--bl);padding:3px 8px;border-radius:var(--border-radius-md)">S: 빈 자리</div>
+      </div>
+    </div>
+    <div id="att-toast" style="display:none">
+      <div class="alert al-push" style="margin-top:5px">
+        <i class="ti ti-send" aria-hidden="true"></i>
+        <div><div class="al-ti" id="att-msg">저장 완료</div><div class="al-bd">Sheets 반영 · 학부모 앱 + njsg@newjerseyswimming.com 알림</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="adm-test" style="display:none">
+    <div class="alert al-info" style="margin-top:0">
+      <i class="ti ti-clipboard-check" aria-hidden="true"></i>
+      <div>
+        <div class="al-ti">레벨 테스트 — 마지막 주 (주중 8/17 · 토 8/15 · 일 8/16)</div>
+        <div class="al-bd">P=통과 · S=반복 · P3→4=진급<br>시트: 이름/레벨/요일+시간/P 또는 S</div>
+      </div>
+    </div>
+    <div class="card" style="padding:10px 12px">
+      <div class="att-row">
+        <div class="rav">JY</div>
+        <div style="flex:1"><div style="font-size:11px;font-weight:500;color:var(--color-text-primary)">Jia Yoo <span style="font-size:9px;color:var(--color-text-secondary)">#6458 · Lv.3</span></div></div>
+        <select class="fsel" style="width:90px;font-size:11px;padding:4px 6px" onchange="showTest(this,'jia-res')">
+          <option value="">–</option><option value="P">P (통과)</option><option value="P4">P3→4 (진급)</option><option value="S">S (반복)</option>
+        </select>
+      </div>
+      <div id="jia-res" style="display:none;margin-top:5px"></div>
+    </div>
+    <button class="btn p full" onclick="saveTests()">저장 + 학부모 알림</button>
+    <div id="test-toast" style="display:none">
+      <div class="alert al-ok" style="margin-top:7px"><i class="ti ti-check" aria-hidden="true"></i><div><div class="al-ti">저장 완료 · 학부모 알림 발송</div></div></div>
+    </div>
+  </div>
+
+  <div id="adm-review" style="display:none">
+    <div style="text-align:center;padding:20px;color:var(--color-text-secondary);font-size:12px;border:.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md)">
+      <i class="ti ti-inbox" aria-hidden="true" style="font-size:24px;display:block;margin-bottom:7px;color:var(--color-border-secondary)"></i>
+      검토 대기 없음
+    </div>
+  </div>
+
+  <div id="adm-register" style="display:none">
+    <div class="alert al-info" style="margin-top:0">
+      <i class="ti ti-user-plus" aria-hidden="true"></i>
+      <div><div class="al-ti">등록 → 학부모 앱 알림 · 강사/레인은 첫 수업일 공개</div></div>
+    </div>
+    <div class="card">
+      <div class="fg"><label class="fl">부모 이메일</label><input type="email" class="fi" placeholder="parent@email.com"></div>
+      <div class="g2">
+        <div class="fg"><label class="fl">학생 이름</label><input type="text" class="fi" placeholder="Full Name"></div>
+        <div class="fg"><label class="fl">학생 ID</label><input type="text" class="fi" placeholder="예) 6594"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label class="fl">레벨</label>
+          <select class="fsel"><option>Lv.1(빨강)</option><option>Lv.2(주황)</option><option>Lv.3(노랑)</option><option>Lv.4(초록)</option><option>Lv.5(파랑)</option><option>Lv.6(검정)</option></select>
+        </div>
+        <div class="fg"><label class="fl">수업 시작일</label><input type="date" class="fi" id="start-date"></div>
+      </div>
+      <div class="fg"><label class="fl">수업 시간</label>
+        <select class="fsel">
+          <option>Mon @4:10pm</option><option>Tue @4:10pm</option><option>Wed @4:10pm</option>
+          <option>Thu @4:10pm</option><option>Fri @4:10pm</option>
+          <option>Sat @9:00am</option><option>Sat @10:30am</option>
+          <option>Sun @10:30am</option><option>Sun @2:15pm</option>
+        </select>
+      </div>
+      <button class="btn p full">등록 + 학부모 앱 알림</button>
+    </div>
+  </div>
+
+  <div id="adm-sheet" style="display:none">
+    <div class="alert al-ok" style="margin-top:0">
+      <i class="ti ti-brand-google" aria-hidden="true"></i>
+      <div><div class="al-ti">Summer 2025 시트 연동 · 정상</div><div class="al-bd">15fH5pScNzKFYuGr1GKYCwKkZA0_r7EHGtmaiFElWy6g</div></div>
+    </div>
+    <div class="fg"><label class="fl">시트 URL</label><input type="url" class="fi" value="https://docs.google.com/spreadsheets/d/15fH5pScN..."></div>
+    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 11px;font-size:10px;font-family:var(--font-mono);color:var(--color-text-secondary);margin-bottom:8px">
+      <div style="color:var(--t);margin-bottom:3px">// 세션 정보</div>
+      <div>기간: 6/22 ~ 8/21/2026</div>
+      <div>여름학기 마지막날: 8/21/2026</div>
+      <div>NO CLASS: 7/4 (토)</div>
+      <div style="margin-top:4px;color:var(--t)">// 시트 기재 형식</div>
+      <div>보충: 이름/레벨/요일+시간</div>
+      <div>마지막주: 이름/레벨/요일+시간/TEST</div>
+      <div>추가: 이름/레벨/추가/요일+시간</div>
+      <div>테스트: 이름/레벨/요일+시간/P or S</div>
+    </div>
+    <button class="btn p full"><i class="ti ti-refresh" aria-hidden="true" style="font-size:12px"></i> 연동 업데이트</button>
+  </div>
+</div>
+
+<!-- ===== 알림 ===== -->
+<div class="pg" id="pg-notif">
+  <div class="sec" style="margin-top:4px">알림</div>
+  <div class="card">
+    <div class="notif-it">
+      <div class="ndot info"></div>
+      <div class="nbody">
+        <div class="nti">Summer 2025 세션 시작</div>
+        <div class="nd">6/22 (일) ~ 여름학기 마지막날 8/21/2026 · Jia, Dana 등록 완료</div>
+        <div class="nt">방금</div>
+      </div>
+    </div>
+    <div class="notif-it">
+      <div class="ndot cancel"></div>
+      <div class="nbody">
+        <div class="nti">7/4 (토) — 독립기념일 NO CLASS</div>
+        <div class="nd">토요일 수업 없음 · 일요일 7/5 정상 운영</div>
+        <div class="nt">오늘</div>
+      </div>
+    </div>
+    <div class="notif-it">
+      <div class="ndot ok"></div>
+      <div class="nbody">
+        <div class="nti">Dana — M(보충) 예약됨</div>
+        <div class="nd">Sat @10:30am · 시트 기재: Dana/4/Sat 10:30am</div>
+        <div class="nt">어제</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-wrap" id="modal-mu">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div id="mu-c">
+      <div class="mti">보충수업 예약 확인</div>
+      <div class="msub">Sheets Make up 칸 자동 기재 · 여름학기 마지막날 8/21/2026까지 유효</div>
+      <div class="card" style="margin-bottom:10px">
+        <div class="pay-row"><span>학생</span><span>Dana #6435 · Lv.4</span></div>
+        <div class="pay-row"><span>보충 일정</span><span id="conf-dt" style="font-weight:500;color:var(--color-text-primary)">-</span></div>
+        <div class="pay-row"><span>코치/레인</span><span id="conf-info">-</span></div>
+        <div class="pay-row"><span>시트 기재</span><span id="conf-cell" style="color:var(--bd);font-size:10px">-</span></div>
+        <div class="pay-tot"><span>요금</span><span style="color:var(--t)">무료</span></div>
+      </div>
+      <button class="btn p full" onclick="confirmMu()">예약 확정</button>
+      <button class="btn sec full" style="margin-top:5px" onclick="closeModal('modal-mu')">취소</button>
+    </div>
+    <div id="mu-s" style="display:none">
+      <div class="succ">
+        <div class="succ-ico" style="background:var(--tl);color:var(--t)"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:5px">예약 완료!</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Sheets 자동 기재됨<br><strong id="mu-succ-cell" style="color:var(--bd)">-</strong></div>
+        <button class="btn p full" style="margin-top:12px" onclick="closeModal('modal-mu');goPage('home')">홈으로</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="modal-extra">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div id="ex-c">
+      <div class="mti">추가수업 요청</div>
+      <div class="msub">관리자 인보이스 → 결제 → 예약 확정</div>
+      <div class="card" style="margin-bottom:10px">
+        <div class="pay-row"><span>수업</span><span id="ex-conf-dt">-</span></div>
+        <div class="pay-row"><span>시트 기재</span><span id="ex-conf-cell" style="color:var(--bd);font-size:10px">-</span></div>
+        <div class="pay-row"><span>이메일</span><span style="font-size:10px">njsg@newjerseyswimming.com</span></div>
+        <div class="pay-tot"><span>요금</span><span style="color:var(--t)">$40</span></div>
+      </div>
+      <button class="btn p full" onclick="confirmEx()">요청 전송</button>
+      <button class="btn sec full" style="margin-top:5px" onclick="closeModal('modal-extra')">취소</button>
+    </div>
+    <div id="ex-s" style="display:none">
+      <div class="succ">
+        <div class="succ-ico" style="background:var(--bl);color:var(--b)"><i class="ti ti-mail" aria-hidden="true"></i></div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:5px">요청 전송!</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">njsg@newjerseyswimming.com 발송됨</div>
+        <button class="btn p full" style="margin-top:12px" onclick="closeModal('modal-extra');goPage('home')">홈으로</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="modal-addchild">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mti">자녀 추가</div>
+    <div class="msub">같은 이메일로 여러 자녀 등록 · ID로 구분</div>
+    <div class="fg"><label class="fl">자녀 이름</label><input type="text" class="fi" placeholder="Full Name"></div>
+    <div class="g2">
+      <div class="fg"><label class="fl">학생 ID</label><input type="text" class="fi" placeholder="예) 6594"></div>
+      <div class="fg"><label class="fl">레벨</label>
+        <select class="fsel"><option>Lv.1(빨강)</option><option>Lv.2(주황)</option><option>Lv.3(노랑)</option><option>Lv.4(초록)</option><option>Lv.5(파랑)</option><option>Lv.6(검정)</option></select>
+      </div>
+    </div>
+    <button class="btn p full" onclick="closeModal('modal-addchild')">추가 완료</button>
+    <button class="btn sec full" style="margin-top:5px" onclick="closeModal('modal-addchild')">취소</button>
+  </div>
+</div>
+
+<script>
+const STATES=['o','x','m','b','ns','cancel','p','s','n'];
+const LABELS=['O','X','M','B','NS','CAN','P','S','–'];
+const MSGS={x:'미등록일(X) → 보충 활성 · 학부모 알림',ns:'무단결석(NS) → 보충 차단 · 학부모 알림',m:'M 기재 → Sheets 반영',b:'보너스(B) → Sheets 반영',cancel:'수업 취소 → 전체 학부모 즉시 알림',p:'통과(P) → 학부모 통과 알림',s:'반복요망(S) → 학부모 알림',o:'출석(O) → Sheets 반영'};
+
+document.querySelectorAll('.ni').forEach(n=>n.addEventListener('click',()=>goPage(n.dataset.pg)));
+function goPage(p){
+  document.querySelectorAll('.pg').forEach(e=>e.classList.remove('act'));
+  document.querySelectorAll('.ni').forEach(e=>e.classList.remove('act'));
+  document.getElementById('pg-'+p).classList.add('act');
+  document.querySelector('[data-pg="'+p+'"]').classList.add('act');
+  window.scrollTo(0,0);
+}
+function swChild(el,c){
+  document.querySelectorAll('#pg-home .child-sw .csw').forEach(b=>b.classList.remove('act'));
+  el.classList.add('act');
+  ['jia','dana'].forEach(n=>{const d=document.getElementById('ch-'+n);if(d)d.style.display=n===c?'block':'none';});
+}
+function swMuChild(el,id){
+  document.querySelectorAll('#pg-makeup .child-sw .csw').forEach(b=>b.classList.remove('act'));
+  el.classList.add('act');
+  ['mup-jia','mup-dana'].forEach(n=>{const d=document.getElementById(n);if(d)d.style.display=n===id?'block':'none';});
+}
+function swMuTab(el,t){
+  el.closest('.tab-row').querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  ['mu-makeup','mu-extra'].forEach(id=>{const d=document.getElementById(id);if(d)d.style.display=id===t?'block':'none';});
+}
+function swDayTab(el,t){
+  el.closest('.tab-row').querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  ['day-weekday','day-sat','day-sun'].forEach(id=>{const d=document.getElementById(id);if(d)d.style.display=id===t?'block':'none';});
+}
+function swAtab(el,t){
+  el.closest('.tab-row').querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#pg-admin [id^="adm-"]').forEach(d=>d.style.display='none');
+  document.getElementById(t).style.display='block';
+}
+
+let muData={dt:'',info:'',cell:''};
+function selMu(el,dt,instr,lane,isLast){
+  el.closest('.card').querySelectorAll('.time-slot:not(.nc-slot)').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  const cell=isLast==='true'?'Dana/4/Sat 10:30am/TEST':'Dana/4/Sat 10:30am';
+  muData={dt,info:instr+' · '+lane,cell};
+  document.getElementById('mu-dt').textContent=dt;
+  document.getElementById('mu-info').textContent=muData.info;
+  document.getElementById('mu-cell').textContent=cell;
+  document.getElementById('dana-mu-confirm').style.display='block';
+}
+
+let exData={dt:'',cell:''};
+function selEx(el,dt){
+  document.querySelectorAll('#mu-extra .time-slot:not(.nc-slot)').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  exData={dt,cell:'Jia/3/추가/'+dt};
+  document.getElementById('ex-dt').textContent=dt;
+  document.getElementById('ex-cell').textContent=exData.cell;
+  document.getElementById('extra-confirm').style.display='block';
+}
+
+function openModal(id){
+  if(id==='modal-mu'){
+    document.getElementById('conf-dt').textContent=muData.dt||'-';
+    document.getElementById('conf-info').textContent=muData.info||'-';
+    document.getElementById('conf-cell').textContent=muData.cell||'-';
+    document.getElementById('mu-c').style.display='block';
+    document.getElementById('mu-s').style.display='none';
+  }
+  if(id==='modal-extra'){
+    document.getElementById('ex-conf-dt').textContent=exData.dt||'-';
+    document.getElementById('ex-conf-cell').textContent=exData.cell||'-';
+    document.getElementById('ex-c').style.display='block';
+    document.getElementById('ex-s').style.display='none';
+  }
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function confirmMu(){
+  document.getElementById('mu-succ-cell').textContent=muData.cell||'-';
+  document.getElementById('mu-c').style.display='none';
+  document.getElementById('mu-s').style.display='block';
+}
+function confirmEx(){
+  document.getElementById('ex-c').style.display='none';
+  document.getElementById('ex-s').style.display='block';
+}
+
+function cycleAtt(el){
+  const cur=STATES.indexOf(STATES.find(s=>el.classList.contains(s))||'n');
+  const next=(cur+1)%STATES.length;
+  STATES.forEach(s=>el.classList.remove(s));
+  el.classList.add(STATES[next]);
+  el.textContent=LABELS[next];
+  const t=document.getElementById('att-toast');
+  document.getElementById('att-msg').textContent=MSGS[STATES[next]]||'Sheets 반영';
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
+}
+
+function showTest(sel,id){
+  const v=sel.value;
+  const d=document.getElementById(id);
+  if(!v){d.style.display='none';return;}
+  d.style.display='block';
+  if(v==='S'){d.innerHTML=`<div style="background:var(--rl);border-radius:var(--border-radius-md);padding:8px;font-size:11px;color:var(--r)">반복 요망 · 현재 레벨 유지</div>`;}
+  else{const up=v.length>1?` → Level ${v.slice(-1)} 진급`:'';d.innerHTML=`<div style="background:var(--tl);border-radius:var(--border-radius-md);padding:8px;font-size:11px;color:var(--td)">통과!${up}</div>`;}
+}
+function saveTests(){const t=document.getElementById('test-toast');t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+
+let lo=false;
+function toggleLang(){lo=!lo;document.getElementById('lang-menu').classList.toggle('open',lo);}
+function setLang(c){document.getElementById('cur-lang').textContent=c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.remove('sel'));event.currentTarget.classList.add('sel');lo=false;document.getElementById('lang-menu').classList.remove('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.rel')){lo=false;document.getElementById('lang-menu').classList.remove('open');}});
+
+const sd=document.getElementById('start-date');
+if(sd){const t=new Date();sd.value=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;}
+</script>
